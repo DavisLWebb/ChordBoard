@@ -27,7 +27,7 @@ int main (void) {
       pinMode (BUTTON4, INPUT);
            
       int command[5];     /* array of current state of pressed/unpressed inputs */
-      int newChrd = 0;    /* a chord has been released -- initially false */
+      int new = 0;    /* a chord has been released -- initially false */
       while (1) {
             
               /* set array elements to 0 */
