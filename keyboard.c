@@ -1,13 +1,19 @@
 /*
  *
  * keyboard.c: polls the state of the first 5 GPIO pins of the raspberry pi. Prints to STDIN after a chord is released.
- *
+ * 
  */
     
 #include <stdio.h>
 #include <math.h>
 #include <wiringPi.h>
-    
+
+/*
+
+Below are the definitions for the buttons
+
+*/
+
 #define BUTTON0 0
 #define BUTTON1 1
 #define BUTTON2 2
