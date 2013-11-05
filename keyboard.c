@@ -8,7 +8,7 @@
 #include <math.h>
 #include <wiringPi.h>
     
-#define BUTTON0 0
+#define BUTTON0 0  //Definition of the buttons implremented through the wiringPi library
 #define BUTTON1 1
 #define BUTTON2 2
 #define BUTTON3 3
@@ -18,7 +18,7 @@ int buttonPressed();    /* Boolean return */
 
 int main (void) {
    
-      wiringPiSetup ();
+      wiringPiSetup ();           // Initialization for the wiringPi functions
                                   /* Set the GPIO pins as inputs */
       pinMode (BUTTON0, INPUT);
       pinMode (BUTTON1, INPUT);
@@ -28,9 +28,15 @@ int main (void) {
            
       int command[5];     /* array of current state of pressed/unpressed inputs */
       int new = 0;    /* a chord has been released -- initially false */
+      
+      /*
+       * The following infinite loop is used to collect data from the keyboard 
+      */
+      
       while (1) {
             
               /* set array elements to 0 */
+            
             command[0] = 0;
             command[1] = 0;
             command[2] = 0;
@@ -38,6 +44,7 @@ int main (void) {
             command[4] = 0;
             
               /* Polls the button state to determine which, if any, buttons are pressed. */
+            
             while(buttonPressed()) {
                   if (digitalRead(BUTTON0) == LOW)
                         command[0] = 1;
@@ -56,6 +63,7 @@ int main (void) {
             delay(1);
             
               /* If a new chord has been released and is ready to print. */
+            
             if (new) {
 
                   /* add up the weighted sum of keypresses and print it */
@@ -63,12 +71,17 @@ int main (void) {
                   int i;
                   int ret = 0;
                   for (i=0; i < 5; i++) {
+            
                     /* for each button */
+            
                         if (command[i]) {
+            
                           /* if that button was pressed */
+            
                               int ad = 1; /* weight of button */
                               
                               /* determine weight of button */
+            
                               int j = 0;
                               while (j < i) {
                                     ad = ad*2; 
@@ -76,27 +89,40 @@ int main (void) {
                               }
                               
                               /* sum button weight */
+            
                               ret = ret + ad;
                         }
                   }
+            
                     /* print button weight */
+            
                   printf("\n\t%d\n", ret);
+            
                     /* ready for next chord */
+            
                   new = 0;
-            }
-      }
+            }                                       // end of the if statement
+      }                                             //end of the while loop
 }
 
 int buttonPressed() {
+    
+    /* Low means that the button was pressed */
+    
         if (digitalRead(BUTTON0) == LOW)
                 return 1;
+                
         if (digitalRead(BUTTON1) == LOW)
                 return 1;
+        
         if (digitalRead(BUTTON2) == LOW)
                 return 1;
+        
         if (digitalRead(BUTTON3) == LOW)
                 return 1;
+        
         if (digitalRead(BUTTON4) == LOW)
                 return 1;
+        
         return 0;
 }
